@@ -3,24 +3,39 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
 public class TankDrive extends OpMode {
-    public DcMotor leftFront = null;
-    public DcMotor rightFront = null;
-    public DcMotor leftBack = null;
-    public DcMotor rightBack = null;
+    public DcMotor leftFrontF = null;
+    public DcMotor rightFrontF = null;
+    public DcMotor leftBackF = null;
+    public DcMotor rightBackF = null;
+    public DcMotor rightBackB = null;
+    public DcMotor rightFrontB = null;
+    public DcMotor leftBackB = null;
+    public DcMotor leftFrontB = null;
     @Override
     public void init() {
-        leftFront = hardwareMap.get(DcMotor.class, "left_front");
-        leftBack = hardwareMap.get(DcMotor.class, "left_back");
-        rightFront = hardwareMap.get(DcMotor.class, "right_front");
-        rightBack = hardwareMap.get(DcMotor.class, "right_back");
+        leftFrontF = hardwareMap.get(DcMotor.class, "left_front_forward");
+        leftBackF = hardwareMap.get(DcMotor.class, "left_back_forward");
+        rightFrontF = hardwareMap.get(DcMotor.class, "right_front_forward");
+        rightBackF = hardwareMap.get(DcMotor.class, "right_back_forward");
 
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
-        leftBack.setDirection(DcMotor.Direction.FORWARD);
-        rightFront.setDirection(DcMotor.Direction.FORWARD);
-        rightBack.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontB = hardwareMap.get(DcMotor.class, "left_front_backward");
+        leftBackB = hardwareMap.get(DcMotor.class, "left_back_backward");
+        rightFrontB = hardwareMap.get(DcMotor.class, "right_front_backward");
+        rightBackB = hardwareMap.get(DcMotor.class, "right_back_backward");
+
+        leftFrontF.setDirection(DcMotor.Direction.FORWARD);
+        leftBackF.setDirection(DcMotor.Direction.FORWARD);
+        rightFrontF.setDirection(DcMotor.Direction.FORWARD);
+        rightBackF.setDirection(DcMotor.Direction.FORWARD);
+
+        leftFrontB.setDirection(DcMotor.Direction.REVERSE);
+        leftBackB.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontB.setDirection(DcMotor.Direction.REVERSE);
+        rightBackB.setDirection(DcMotor.Direction.REVERSE);
 
         telemetry.addData(">", "Robot Ready.  Press START.");
     }
@@ -37,16 +52,26 @@ public class TankDrive extends OpMode {
 
     @Override
     public void loop() {
-        double right;
-        double left;
+        double rightForward;
+        double leftForward;
+        double leftBackward;
+        double rightBackward;
 
-        right = -gamepad1.right_stick_y;
-        left = -gamepad1.left_stick_y;
+        rightForward = -gamepad1.right_stick_y;
+        leftForward = -gamepad1.left_stick_y;
 
-        leftBack.setPower(left);
-        leftFront.setPower(left);
-        rightBack.setPower(right);
-        rightFront.setPower(right);
+        leftBackF.setPower(leftForward);
+        leftFrontF.setPower(leftForward);
+        rightBackF.setPower(rightForward);
+        rightFrontF.setPower(rightForward);
+
+        rightBackward = gamepad1.right_stick_y;
+        leftBackward = gamepad1.left_stick_y;
+
+        leftBackB.setPower(leftBackward);
+        leftFrontB.setPower(leftBackward);
+        rightBackB.setPower(rightBackward);
+        rightFrontF.setPower(rightBackward);
 
     }
 
