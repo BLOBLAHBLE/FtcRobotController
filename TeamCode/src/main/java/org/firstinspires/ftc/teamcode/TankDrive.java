@@ -4,57 +4,49 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 //@Disabled
 @TeleOp
 public class TankDrive extends OpMode {
-    public DcMotor leftFront = null;
-    public DcMotor rightFront = null;
-    public DcMotor leftBack = null;
-    public DcMotor rightBack = null;
-    @Override
-    public void init() {
-        leftFront = hardwareMap.get(DcMotor.class, "left_front");
-        leftBack = hardwareMap.get(DcMotor.class, "left_back");
-        rightFront = hardwareMap.get(DcMotor.class, "right_front");
-        rightBack = hardwareMap.get(DcMotor.class, "right_back");
+    private DcMotor leftFront, leftBack, rightFront, rightBack;
+    public void init(HardwareMap hwMap) {
+
+        leftFront = hwMap.get(DcMotor.class, "left_front");
+        leftBack = hwMap.get(DcMotor.class, "left_back");
+        rightFront = hwMap.get(DcMotor.class, "right_front");
+        rightBack = hwMap.get(DcMotor.class, "right_back");
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.FORWARD);
         rightBack.setDirection(DcMotor.Direction.FORWARD);
 
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         telemetry.addData(">", "Robot Ready.  Press START.");
     }
 
-    @Override
-    public void init_loop() {
-        super.init_loop();
-    }
+    public void drive (double forward, double strafe, double rotate) {
+        double leftFrontPower = forward + strafe + rotate;
+        double leftBackPower = forward + strafe + rotate;
+        double rightFrontPower = forward + strafe + rotate;
+        double rightBackPower = forward + strafe + rotate;
 
-    @Override
-    public void start() {
-        super.start();
-    }
+        double maxPower = 1.0;
+        double maxSpeed = 1.0
 
-    @Override
-    public void loop() {
-        double right;
-        double left;
+        maxPower = Math.max(maxPower, Math.abs(leftFrontPower));
+        maxPower = Math.max(maxPower, Math.abs(leftBackPower));
+        maxPower = Math.max(maxPower, Math.abs(rightFrontPower));
+        maxPower = Math.max(maxPower, Math.abs(rightBackPower));
 
-        right = -gamepad1.right_stick_y;
-        left = -gamepad1.left_stick_y;
-
-        leftBack.setPower(left);
-        leftFront.setPower(left);
-        rightBack.setPower(right);
-        rightFront.setPower(right);
-
-    }
-
-    @Override
-    public void stop() {
-        super.stop();
+        leftFront.setPower(maxSpeed * (leftFrontPower / maxPower));
+        leftBack.setPower(maxSpeed * (leftBackPower / maxPower));
+        rightFront.setPower(maxSpeed * (rightFrontPower / maxPower));
+        rightBack.setPower(maxSpeed * (rightBackPower / maxPower));
     }
 }
