@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
 public class TankDrive extends OpMode {
@@ -34,17 +33,17 @@ public class TankDrive extends OpMode {
     @Override
     public void loop() {
 
-        double left = -gamepad1.left_stick_y;
         double right = -gamepad1.right_stick_y;
+        double left = -gamepad1.left_stick_y;
 
         double strafe = 0;
         if (gamepad1.right_bumper) strafe += 1;
         if (gamepad1.left_bumper) strafe -= 1;
 
-        double fl = left + strafe;
-        double fr = right - strafe;
-        double bl = left - strafe;
-        double br = right + strafe;
+        double fr = right + strafe;
+        double fl = left - strafe;
+        double br = right - strafe;
+        double bl = left + strafe;
 
         double max = Math.max(1.0,
                 Math.max(Math.abs(fl),
