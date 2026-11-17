@@ -33,8 +33,8 @@ public class TankDrive extends OpMode {
     @Override
     public void loop() {
 
-        double right = -gamepad1.right_stick_y;
-        double left = -gamepad1.left_stick_y;
+        double right = -gamepad1.right_stick_y * gamepad1.right_stick_y;
+        double left = -gamepad1.left_stick_y * gamepad1.left_stick_y;
 
         double strafe = 0;
         if (gamepad1.right_bumper) strafe += 1;
